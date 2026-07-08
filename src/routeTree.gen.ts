@@ -15,6 +15,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedApplicationsIndexRouteImport } from './routes/_authenticated/applications/index'
+import { Route as AuthenticatedApplicationsIdRouteRouteImport } from './routes/_authenticated/applications/$id/route'
+import { Route as AuthenticatedApplicationsIdIndexRouteImport } from './routes/_authenticated/applications/$id/index'
+import { Route as AuthenticatedApplicationsIdEditRouteImport } from './routes/_authenticated/applications/$id/edit'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -48,19 +51,42 @@ const AuthenticatedApplicationsIndexRoute =
     path: '/applications/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedApplicationsIdRouteRoute =
+  AuthenticatedApplicationsIdRouteRouteImport.update({
+    id: '/applications/$id',
+    path: '/applications/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedApplicationsIdIndexRoute =
+  AuthenticatedApplicationsIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedApplicationsIdRouteRoute,
+  } as any)
+const AuthenticatedApplicationsIdEditRoute =
+  AuthenticatedApplicationsIdEditRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => AuthenticatedApplicationsIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/applications/$id': typeof AuthenticatedApplicationsIdRouteRouteWithChildren
   '/applications/': typeof AuthenticatedApplicationsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/applications/$id/edit': typeof AuthenticatedApplicationsIdEditRoute
+  '/applications/$id/': typeof AuthenticatedApplicationsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/applications': typeof AuthenticatedApplicationsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/applications/$id/edit': typeof AuthenticatedApplicationsIdEditRoute
+  '/applications/$id': typeof AuthenticatedApplicationsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,22 +94,42 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/_authenticated/applications/$id': typeof AuthenticatedApplicationsIdRouteRouteWithChildren
   '/_authenticated/applications/': typeof AuthenticatedApplicationsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/applications/$id/edit': typeof AuthenticatedApplicationsIdEditRoute
+  '/_authenticated/applications/$id/': typeof AuthenticatedApplicationsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/settings' | '/applications/' | '/settings/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/settings'
+    | '/applications/$id'
+    | '/applications/'
+    | '/settings/'
+    | '/applications/$id/edit'
+    | '/applications/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/applications' | '/settings'
+  to:
+    | '/'
+    | '/login'
+    | '/applications'
+    | '/settings'
+    | '/applications/$id/edit'
+    | '/applications/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/settings'
+    | '/_authenticated/applications/$id'
     | '/_authenticated/applications/'
     | '/_authenticated/settings/'
+    | '/_authenticated/applications/$id/edit'
+    | '/_authenticated/applications/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -136,6 +182,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedApplicationsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/applications/$id': {
+      id: '/_authenticated/applications/$id'
+      path: '/applications/$id'
+      fullPath: '/applications/$id'
+      preLoaderRoute: typeof AuthenticatedApplicationsIdRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/applications/$id/': {
+      id: '/_authenticated/applications/$id/'
+      path: '/'
+      fullPath: '/applications/$id/'
+      preLoaderRoute: typeof AuthenticatedApplicationsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedApplicationsIdRouteRoute
+    }
+    '/_authenticated/applications/$id/edit': {
+      id: '/_authenticated/applications/$id/edit'
+      path: '/edit'
+      fullPath: '/applications/$id/edit'
+      preLoaderRoute: typeof AuthenticatedApplicationsIdEditRouteImport
+      parentRoute: typeof AuthenticatedApplicationsIdRouteRoute
+    }
   }
 }
 
@@ -153,13 +220,33 @@ const AuthenticatedSettingsRouteRouteWithChildren =
     AuthenticatedSettingsRouteRouteChildren,
   )
 
+interface AuthenticatedApplicationsIdRouteRouteChildren {
+  AuthenticatedApplicationsIdEditRoute: typeof AuthenticatedApplicationsIdEditRoute
+  AuthenticatedApplicationsIdIndexRoute: typeof AuthenticatedApplicationsIdIndexRoute
+}
+
+const AuthenticatedApplicationsIdRouteRouteChildren: AuthenticatedApplicationsIdRouteRouteChildren =
+  {
+    AuthenticatedApplicationsIdEditRoute: AuthenticatedApplicationsIdEditRoute,
+    AuthenticatedApplicationsIdIndexRoute:
+      AuthenticatedApplicationsIdIndexRoute,
+  }
+
+const AuthenticatedApplicationsIdRouteRouteWithChildren =
+  AuthenticatedApplicationsIdRouteRoute._addFileChildren(
+    AuthenticatedApplicationsIdRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedApplicationsIdRouteRoute: typeof AuthenticatedApplicationsIdRouteRouteWithChildren
   AuthenticatedApplicationsIndexRoute: typeof AuthenticatedApplicationsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedApplicationsIdRouteRoute:
+    AuthenticatedApplicationsIdRouteRouteWithChildren,
   AuthenticatedApplicationsIndexRoute: AuthenticatedApplicationsIndexRoute,
 }
 

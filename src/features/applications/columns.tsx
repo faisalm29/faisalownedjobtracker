@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Badge } from "#/components/ui/badge.tsx";
@@ -103,11 +104,16 @@ export const columns: ColumnDef<Application, unknown>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onClick={() => console.log("edit", row.original.id)}
-          >
-            <Pencil className="mr-2 h-4 w-4" />
-            Edit
+          <DropdownMenuItem asChild>
+            <Link
+              to="/applications/$id/edit"
+              params={{
+                id: row.original.id,
+              }}
+            >
+              <Pencil className="mr-2 h-4 w-4" />
+              Edit
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-destructive"
