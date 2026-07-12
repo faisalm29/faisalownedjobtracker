@@ -1,6 +1,6 @@
 import type { jobSources, jobStatuses } from "@/lib/schemas/application";
 
-type JobStatus = (typeof jobStatuses)[number] | null;
+type JobStatus = (typeof jobStatuses)[number];
 type JobSource = (typeof jobSources)[number] | null;
 
 export type Application = {

@@ -1,9 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_authenticated/applications/$id')({
+export const Route = createFileRoute("/_authenticated/applications/$id")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/applications/$id"!</div>
+  return (
+    <div className="my-16">
+      <Outlet />
+    </div>
+  );
 }

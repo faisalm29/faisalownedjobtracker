@@ -60,7 +60,8 @@ export function DataTable<TData>({
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
                   {header.isPlaceholder ? null : (
-                    <div
+                    <button
+                      type="button"
                       className={
                         header.column.getCanSort()
                           ? "flex cursor-pointer select-none items-center gap-1"
@@ -80,7 +81,7 @@ export function DataTable<TData>({
                         ) : (
                           <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
                         ))}
-                    </div>
+                    </button>
                   )}
                 </TableHead>
               ))}
